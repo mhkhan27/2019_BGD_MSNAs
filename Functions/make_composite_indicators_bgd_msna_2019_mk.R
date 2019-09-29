@@ -17,8 +17,8 @@ ind_to_ind <- individual_data %>%
     I.HEALTH.age_groups_medical.INDV = if_else(ind_age < 18,"0-17",
                                                if_else(ind_age %in% 18:59,"18-59",
                                                        if_else(ind_age >= 60,"60+","999",NULL))),
-    ind_gender=if_else(ind_gender== "male", "male", "female", missing=NULL)
-
+    ind_gender=if_else(ind_gender== "male", "male", "female", missing=NULL),
+    I.HEALTH.ind_smoke_some_all_days_adult.INDV = if_else((ind_smoke == "everyday" | ind_smoke == "some_days") & ind_age >= 18, "yes","no")
     
     ) 
     
@@ -108,7 +108,11 @@ indiv_to_hh <- individual_data %>%
                     I.HEALTH.health_expenses_reported.HH = if_else(exp_medical %in% medical_expenses_grater_than_zero | health_coping.pay_care == 1, "yes","no","no" ),
                     I.HEALTH.debt_pay_health.HH = if_else(health_coping.ghealth_debt == 1 | debt_reason.pay_health_expenses ==1 , "yes","no","no"),
                     I.HEALTH.atleast_oneunder5_diarrhea.HH = if_else(under5_diarrhea > 0,"yes","no",NULL),
-                    I.HEALTH.atleast_oneover5_diarrhea.HH = if_else(over5_diarrhea > 0, "yes","no",NULL)
+                    I.HEALTH.atleast_oneover5_diarrhea.HH = if_else(over5_diarrhea > 0, "yes","no",NULL),
+                    I.HEALTH.atleast_onepregnant_ANC.HH = if_else(hh_data$pregnant_women_anc > 0, "yes","no"),
+                  
+                    
+                    
                     
   )
   hh_with_individual_level_data<-hh_to_hh %>% left_join(indiv_to_hh, by= c("X_uuid"="X_submission__uuid"))
