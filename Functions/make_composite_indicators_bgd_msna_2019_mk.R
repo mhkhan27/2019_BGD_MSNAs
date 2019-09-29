@@ -111,8 +111,7 @@ indiv_to_hh <- individual_data %>%
                     I.HEALTH.atleast_oneover5_diarrhea.HH = if_else(over5_diarrhea > 0, "yes","no",NULL),
                     I.HEALTH.atleast_onepregnant_ANC.HH = if_else(hh_data$pregnant_women_anc > 0, "yes","no"),
                   
-                    
-                    
+                
                     
   )
   hh_with_individual_level_data<-hh_to_hh %>% left_join(indiv_to_hh, by= c("X_uuid"="X_submission__uuid"))
