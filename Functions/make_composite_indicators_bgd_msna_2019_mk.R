@@ -18,13 +18,8 @@ ind_to_ind <- individual_data %>%
                                                if_else(ind_age %in% 18:59,"18-59",
                                                        if_else(ind_age >= 60,"60+","999",NULL))),
     ind_gender=if_else(ind_gender== "male", "male", "female", missing=NULL),
-    I.HEALTH.ind_smoke_some_all_days_adult.INDV = if_else((ind_smoke == "everyday" | ind_smoke == "some_days") & ind_age >= 18, "yes","no"),
-    
-    I.EDU.age_group_education.INDV = if_else(ind_age %in% 3:4,"3-4",
-                                             if_else(ind_age %in% 5:11,"5-11",
-                                                     if_else(ind_age %in% 12:14,"12-14",
-                                                             if_else(ind_age %in% 15:17,"15-17",
-                                                                     if_else(ind_age %in% 18:24,"18-24",NULL,NULL)))))
+    I.HEALTH.ind_smoke_some_all_days_adult.INDV = if_else((ind_smoke == "everyday" | ind_smoke == "some_days") & ind_age >= 18, "yes","no")
+
     
     ) 
     
@@ -129,6 +124,9 @@ indiv_to_hh <- individual_data %>%
   )
   hh_with_individual_level_data<-hh_to_hh %>% left_join(indiv_to_hh, by= c("X_uuid"="X_submission__uuid"))
   
+
+# For Refugee Only --------------------------------------------------------
+
   if (population == "Refugee"){
    
     Some_primary<- c ("elementary_1", "elementary_2", "elementary_3", "elementary_4","kindergarten")
@@ -225,7 +223,7 @@ hh_to_hh <- hh_with_individual_level_data %>%
         I.P.safety_issues_barriers_education_facilities.HH = if_else(safety_issues_barriers_key_facilities_included_education_rowsum >=1 , "Education_unsafe","no",NULL),
         I.P.safety_issues_barriers_markets.HH = if_else(safety_issues_barriers_key_facilities_included_market_rowsum >=1 , "Market_unsafe","no"),
         
-        #below pb, have to check 
+        
         P.awareness_community_protection_atleast_two_rowsum = rowSums(P.awareness_community_protection_atleast_two),
 
         I.P.awareness_community_protection_atleast_two.HH = if_else(P.awareness_community_protection_atleast_two_rowsum >= 2,"yes","no"),
@@ -264,12 +262,30 @@ hh_to_hh <- hh_with_individual_level_data %>%
                           
                           I.HEALTH.ind_smoke_some_all_days.INDV = if_else( ind_smoke == "everyday" |ind_smoke == "some_days", "yes", "no",NULL),
                           
-                          
+                          # I.EDU.age_group_education.INDV = if_else(ind_age %in% 3:4,"3-4",
+                          #                                          if_else(ind_age %in% 5:11,"5-11",
+                          #                                                  if_else(ind_age %in% 12:14,"12-14",
+                          #                                                          if_else(ind_age %in% 15:17,"15-17",
+                          #                                                                  if_else(ind_age %in% 18:24,"18-24",NULL,NULL))))),
+                          I.EDU.age_group_education.INDV = if_else( ind_age == 3,"3",
+                                                                    if_else(ind_age %in% 4:5,"4-5",
+                                                                            if_else(ind_age %in% 6:14,"6-14",
+                                                                                    if_else(ind_age %in% 15:18,"15-18",
+                                                                                            if_else(ind_age %in% 19:24,"19-24",NULL,NULL))))),
+                          I.EDU.age_group_education_refugee.INDV = if_else( ind_age == 3,"3",
+                                                                    if_else(ind_age %in% 4:5,"4-5",
+                                                                            if_else(ind_age %in% 6:11,"6-11",
+                                                                                    if_else(ind_age %in% 12:14, "12-14",
+                                                                                            if_else(ind_age %in% 15:18,"15-18",
+                                                                                                    if_else(ind_age %in% 19:24,"19-24",NULL,NULL))))))
+                    
     ) %>%  select(X_index,starts_with("I."))
 
   }
   
-  
+
+# For Host Community Only -------------------------------------------------
+
   if (population == "Host") {
     
     Some_primary<- c ("1", "2", "3", "4")
