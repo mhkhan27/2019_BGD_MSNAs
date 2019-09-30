@@ -18,7 +18,13 @@ ind_to_ind <- individual_data %>%
                                                if_else(ind_age %in% 18:59,"18-59",
                                                        if_else(ind_age >= 60,"60+","999",NULL))),
     ind_gender=if_else(ind_gender== "male", "male", "female", missing=NULL),
-    I.HEALTH.ind_smoke_some_all_days_adult.INDV = if_else((ind_smoke == "everyday" | ind_smoke == "some_days") & ind_age >= 18, "yes","no")
+    I.HEALTH.ind_smoke_some_all_days_adult.INDV = if_else((ind_smoke == "everyday" | ind_smoke == "some_days") & ind_age >= 18, "yes","no"),
+    
+    I.EDU.age_group_education.INDV = if_else(ind_age %in% 3:4,"3-4",
+                                             if_else(ind_age %in% 5:11,"5-11",
+                                                     if_else(ind_age %in% 12:14,"12-14",
+                                                             if_else(ind_age %in% 15:17,"15-17",
+                                                                     if_else(ind_age %in% 18:24,"18-24",NULL,NULL)))))
     
     ) 
     
@@ -257,10 +263,7 @@ hh_to_hh <- hh_with_individual_level_data %>%
                           I.EDU.both_formal_informal_edu.INDV= if_else(ind_ed_TLC == "yes" | ind_ed_madrassa == "yes", "yes", "no",NULL),
                           
                           I.HEALTH.ind_smoke_some_all_days.INDV = if_else( ind_smoke == "everyday" |ind_smoke == "some_days", "yes", "no",NULL),
-                          I.EDU.age_group_education.INDV = if_else(ind_age %in% 3:4,"3-4",
-                                                                   if_else(ind_age %in% 5:11,"5-11",
-                                                                           if_else(ind_age %in% 12:17,"12-17",
-                                                                                   if_else(ind_age %in% 18:24,"18-24",NULL,NULL))))
+                          
                           
     ) %>%  select(X_index,starts_with("I."))
 
