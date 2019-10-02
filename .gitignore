@@ -65,6 +65,5 @@ Inputs/Host_Community/03_data_analysis/cleaned_datasets/*
 #machine specific script 
 
 /Functions/input_location.R
-/Functions/ActivatePaths.R
 20190915_HH_Refugee_Cleaned_20190917.csv
 20190915_Indiv_Refugee_Cleaned_20190917.csv
